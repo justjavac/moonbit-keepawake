@@ -50,15 +50,7 @@ pub fn acquire(
     @ffi.to_cstr(normalize_reason(reason)),
     scope.native_code(),
   )
-  if handle.active() {
-    handle
-  } else {
-    raise classify_native_error(
-      status=native_guard_status(handle),
-      operation="acquire",
-      detail=decode_native_detail(native_guard_last_error(handle)),
-    )
-  }
+  finish_acquire(handle)
 }
 
 ///|
@@ -97,17 +89,9 @@ pub fn[T] with_keepawake(
   scope? : Scope = Scope::PreventSystemSleep,
 ) -> T raise {
   let handle = acquire(reason~, scope~)
-  try action() catch {
-    err => {
-      let _ : Result[Unit, KeepAwakeError] = try? handle.release()
-      raise err
-    }
-  } noraise {
-    value => {
-      handle.release()
-      value
-    }
-  }
+  run_with_cleanup(fn() -> T raise { action() }, fn() -> Unit raise {
+    handle.release()
+  })
 }
 
 ///|
@@ -154,13 +138,5 @@ pub fn Guard::scope(self : Guard) -> Scope {
 /// native release operation did not complete successfully.
 pub fn Guard::release(self : Guard) -> Unit raise KeepAwakeError {
   let status = native_guard_release(self)
-  if status == native_status_ok {
-    ()
-  } else {
-    raise classify_native_error(
-      status~,
-      operation="release",
-      detail=decode_native_detail(native_guard_last_error(self)),
-    )
-  }
+  finish_release(status, native_guard_last_error(self))
 }
