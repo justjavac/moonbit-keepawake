@@ -35,6 +35,11 @@ pub(all) enum Scope {
 } derive(Eq)
 
 ///|
+/// Formats a scope using the stable public variant name.
+///
+/// The rendered form is intentionally identical to the enum case name so logs,
+/// examples, and snapshot tests can refer to the same terminology that callers
+/// use at the API boundary.
 pub impl Show for Scope with output(self : Scope, logger) {
   match self {
     PreventSystemSleep => logger.write_string("PreventSystemSleep")

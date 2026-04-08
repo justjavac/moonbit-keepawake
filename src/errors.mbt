@@ -25,6 +25,12 @@ pub(all) suberror KeepAwakeError {
 } derive(Eq)
 
 ///|
+/// Formats a keep-awake error into a stable diagnostic string.
+///
+/// The output is designed for logs, test assertions, and user-facing fallback
+/// diagnostics where a structured payload is not convenient to carry around.
+/// Each variant includes its labeled fields so the rendered text remains easy
+/// to scan when attached to higher-level error reports.
 pub impl Show for KeepAwakeError with output(self : KeepAwakeError, logger) {
   match self {
     BackendUnavailable(detail~) =>
