@@ -5,6 +5,13 @@ test "normalize_reason trims surrounding whitespace" {
 }
 
 ///|
+test "normalized reasons convert to null-terminated c strings" {
+  let c_reason = @ffi.to_cstr(normalize_reason("  writing backups  "))
+  assert_eq(@ffi.from_cstr(c_reason), "writing backups")
+  assert_eq(c_reason[c_reason.length() - 1], 0)
+}
+
+///|
 test "scope codes round-trip" {
   let scopes : Array[Scope] = [
     Scope::PreventSystemSleep,

@@ -47,7 +47,7 @@ pub fn acquire(
   scope? : Scope = Scope::PreventSystemSleep,
 ) -> Guard raise KeepAwakeError {
   let handle = native_guard_create(
-    @utf8.encode(normalize_reason(reason)),
+    @ffi.to_cstr(normalize_reason(reason)),
     scope.native_code(),
   )
   if handle.active() {

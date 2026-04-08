@@ -1,6 +1,9 @@
 {
   "name": "justjavac/keepawake",
   "version": "0.1.0",
+  "deps": {
+    "justjavac/ffi": "0.2.1"
+  },
   "readme": "README.mbt.md",
   "repository": "https://github.com/justjavac/moonbit-keepawake",
   "license": "MIT",
