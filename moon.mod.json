@@ -2,8 +2,18 @@
   "name": "justjavac/keepawake",
   "version": "0.1.0",
   "readme": "README.mbt.md",
-  "repository": "",
-  "license": "Apache-2.0",
-  "keywords": [],
-  "description": ""
+  "repository": "https://github.com/justjavac/moonbit-keepawake",
+  "license": "MIT",
+  "keywords": [
+    "keepawake",
+    "native",
+    "windows",
+    "linux",
+    "macos",
+    "power-management"
+  ],
+  "description": "Native keep-awake guards for MoonBit on Windows, Linux, and macOS.",
+  "source": "src",
+  "preferred-target": "native",
+  "supported-targets": "native"
 }
