@@ -1,0 +1,11 @@
+{
+  "name": "justjavac/keepawake_examples",
+  "version": "0.1.0",
+  "deps": {
+    "justjavac/keepawake": {
+      "path": ".."
+    }
+  },
+  "preferred-target": "native",
+  "supported-targets": "native"
+}
