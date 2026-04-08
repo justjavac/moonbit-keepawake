@@ -46,6 +46,9 @@ jobs:
       - name: Show MoonBit version
         run: moon version
 
+      - name: Update MoonBit registry
+        run: moon update
+
       - name: Check library
         run: moon check --target native
 
