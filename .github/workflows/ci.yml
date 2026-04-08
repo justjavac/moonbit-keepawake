@@ -1,0 +1,67 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            flag: linux
+            coverage_file: coverage-linux.xml
+          - os: macos-latest
+            flag: macos
+            coverage_file: coverage-macos.xml
+          - os: windows-latest
+            flag: windows
+            coverage_file: coverage-windows.xml
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MoonBit
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Install MoonBit
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          irm https://cli.moonbitlang.com/install/powershell.ps1 | iex
+          "$env:USERPROFILE\.moon\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Show MoonBit version
+        run: moon version
+
+      - name: Check library
+        run: moon check --target native
+
+      - name: Check examples
+        run: moon -C examples check --target native
+
+      - name: Run tests
+        run: moon test --target native --enable-coverage
+
+      - name: Generate coverage report
+        run: moon coverage analyze -p justjavac/keepawake -- -f cobertura -o ${{ matrix.coverage_file }}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          files: ${{ matrix.coverage_file }}
+          flags: ${{ matrix.flag }}
+          name: ${{ matrix.flag }}
+          disable_search: true

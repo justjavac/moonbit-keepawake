@@ -1,0 +1,22 @@
+codecov:
+  require_ci_to_pass: true
+  notify:
+    after_n_builds: 3
+
+coverage:
+  status:
+    patch: off
+    project:
+      default:
+        target: auto
+
+flags:
+  linux:
+    paths:
+      - src
+  macos:
+    paths:
+      - src
+  windows:
+    paths:
+      - src
