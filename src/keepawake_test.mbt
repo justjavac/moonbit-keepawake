@@ -1,12 +1,18 @@
 ///|
 test "scope names stay stable" {
-  inspect(
+  debug_inspect(
     [
-      @keepawake.Scope::PreventSystemSleep.to_string(),
-      @keepawake.Scope::PreventDisplaySleep.to_string(),
-      @keepawake.Scope::PreventSystemAndDisplaySleep.to_string(),
+      @keepawake.PreventSystemSleep.to_string(),
+      @keepawake.PreventDisplaySleep.to_string(),
+      @keepawake.PreventSystemAndDisplaySleep.to_string(),
     ],
-    content="[\"PreventSystemSleep\", \"PreventDisplaySleep\", \"PreventSystemAndDisplaySleep\"]",
+    content=(
+      #|[
+      #|  "PreventSystemSleep",
+      #|  "PreventDisplaySleep",
+      #|  "PreventSystemAndDisplaySleep",
+      #|]
+    ),
   )
 }
 
@@ -14,18 +20,18 @@ test "scope names stay stable" {
 test "acquire and release smoke test" {
   let result = try? @keepawake.acquire(
     reason="blackbox smoke test",
-    scope=@keepawake.Scope::PreventSystemSleep,
+    scope=PreventSystemSleep,
   )
   match result {
     Ok(handle) => {
       assert_true(handle.active())
-      assert_eq(handle.scope(), @keepawake.Scope::PreventSystemSleep)
+      assert_eq(handle.scope(), PreventSystemSleep)
       handle.release()
       assert_true(handle.active() == false)
       handle.release()
       assert_true(handle.active() == false)
     }
-    Err(@keepawake.BackendUnavailable(detail~)) =>
+    Err(BackendUnavailable(detail~)) =>
       assert_true(
         detail.contains("systemd-inhibit") ||
         detail.contains("unsupported") ||
@@ -42,7 +48,7 @@ test "with_keepawake returns the action result" {
   let result : Result[String, Error] = try? @keepawake.with_keepawake(
     fn() { "kept awake" },
     reason="scoped smoke test",
-    scope=@keepawake.Scope::PreventSystemSleep,
+    scope=PreventSystemSleep,
   )
   match result {
     Ok(value) => assert_eq(value, "kept awake")

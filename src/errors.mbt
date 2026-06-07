@@ -31,7 +31,7 @@ pub(all) suberror KeepAwakeError {
 /// diagnostics where a structured payload is not convenient to carry around.
 /// Each variant includes its labeled fields so the rendered text remains easy
 /// to scan when attached to higher-level error reports.
-pub impl Show for KeepAwakeError with output(self : KeepAwakeError, logger) {
+pub impl Show for KeepAwakeError with fn output(self : KeepAwakeError, logger) {
   match self {
     BackendUnavailable(detail~) =>
       logger.write_string("BackendUnavailable(detail=\"\{detail}\")")

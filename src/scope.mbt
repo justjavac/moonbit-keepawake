@@ -40,7 +40,7 @@ pub(all) enum Scope {
 /// The rendered form is intentionally identical to the enum case name so logs,
 /// examples, and snapshot tests can refer to the same terminology that callers
 /// use at the API boundary.
-pub impl Show for Scope with output(self : Scope, logger) {
+pub impl Show for Scope with fn output(self : Scope, logger) {
   match self {
     PreventSystemSleep => logger.write_string("PreventSystemSleep")
     PreventDisplaySleep => logger.write_string("PreventDisplaySleep")
@@ -63,8 +63,8 @@ fn Scope::native_code(self : Scope) -> Int {
 /// Converts a native scope code back into the public enum.
 fn scope_from_native_code(code : Int) -> Scope {
   match code {
-    2 => Scope::PreventDisplaySleep
-    3 => Scope::PreventSystemAndDisplaySleep
-    _ => Scope::PreventSystemSleep
+    2 => PreventDisplaySleep
+    3 => PreventSystemAndDisplaySleep
+    _ => PreventSystemSleep
   }
 }

@@ -112,9 +112,9 @@ test "run_with_cleanup preserves action error and suppresses cleanup error" {
 ///|
 test "scope codes round-trip" {
   let scopes : Array[Scope] = [
-    Scope::PreventSystemSleep,
-    Scope::PreventDisplaySleep,
-    Scope::PreventSystemAndDisplaySleep,
+    PreventSystemSleep,
+    PreventDisplaySleep,
+    PreventSystemAndDisplaySleep,
   ]
   for scope in scopes {
     assert_eq(scope_from_native_code(scope.native_code()), scope)
