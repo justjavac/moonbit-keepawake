@@ -1,6 +1,6 @@
 name = "justjavac/keepawake"
 
-version = "0.1.2"
+version = "0.1.3"
 
 import {
   "justjavac/ffi@0.2.2",

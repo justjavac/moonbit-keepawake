@@ -1,4 +1,13 @@
 ///|
+fn[T, E : Error] try_result_guard_internal(f : () -> T raise E) -> Result[T, E] {
+  try f() catch {
+    e => Err(e)
+  } noraise {
+    value => Ok(value)
+  }
+}
+
+///|
 /// Normalizes caller-supplied reasons before they cross the FFI boundary.
 fn normalize_reason(reason : String) -> String {
   let trimmed = reason.trim().to_owned()
@@ -65,7 +74,7 @@ fn[T] run_with_cleanup(
 ) -> T raise {
   try action() catch {
     err => {
-      let _ : Result[Unit, Error] = try? cleanup()
+      let _ : Result[Unit, Error] = try_result_guard_internal(() => cleanup())
       raise err
     }
   } noraise {
