@@ -10,7 +10,7 @@ fn run_example() -> Unit raise @keepawake.KeepAwakeError {
   let hold_duration_ms : UInt64 = 5000
   let handle = @keepawake.acquire(
     reason="Running the basic keepawake example",
-    scope=@keepawake.Scope::PreventSystemAndDisplaySleep,
+    scope=PreventSystemAndDisplaySleep,
   )
   println("Keep-awake guard acquired for roughly \{hold_duration_ms} ms.")
   wait_for(hold_duration_ms)
