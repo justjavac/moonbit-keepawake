@@ -3,7 +3,7 @@ name = "justjavac/keepawake_examples"
 version = "0.1.0"
 
 import {
-  "justjavac/keepawake@0.1.3",
+  "justjavac/keepawake@0.1.4",
 }
 
 repository = "https://github.com/justjavac/moonbit-keepawake/tree/main/examples"
@@ -18,6 +18,4 @@ preferred_target = "native"
 
 supported_targets = "+native"
 
-options(
-  source: ".",
-)
+source = "."

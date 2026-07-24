@@ -133,7 +133,7 @@ test "scope codes round-trip" {
     PreventSystemAndDisplaySleep,
   ]
   for scope in scopes {
-    assert_eq(scope_from_native_code(scope.native_code()), scope)
+    assert_true(scope_from_native_code(scope.native_code()) == scope)
   }
 }
 

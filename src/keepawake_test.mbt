@@ -33,7 +33,7 @@ test "acquire and release smoke test" {
   match result {
     Ok(handle) => {
       assert_true(handle.active())
-      assert_eq(handle.scope(), PreventSystemSleep)
+      assert_true(handle.scope() == PreventSystemSleep)
       handle.release()
       assert_true(handle.active() == false)
       handle.release()
